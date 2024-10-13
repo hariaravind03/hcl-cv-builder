@@ -1,0 +1,376 @@
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif; /* Modern font */
+    background-color: #101010; /* Dark background for a futuristic feel */
+    color: #e0e0e0; /* Light text for contrast */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Global Styles */
+
+/* Navigation Styles */
+nav {
+    background: linear-gradient(135deg, #1a73e8, #ff4081); /* Gradient */
+    color: #fff;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.4s ease, transform 0.3s ease;
+    position: relative;
+}
+
+nav:hover {
+    background: linear-gradient(135deg, #ff4081, #1a73e8);
+    transform: scale(1.02);
+}
+
+nav h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255, 64, 129, 0.8), 0 0 20px rgba(26, 115, 232, 0.8);
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 30px;
+}
+
+nav ul li {
+    position: relative;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 64, 129, 0.8);
+}
+
+/* Responsive Navigation Styles */
+.nav-toggle {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #fff;
+}
+
+/* Mobile Menu (Hidden by Default) */
+.nav-menu {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    position: absolute;
+    top: 70px;
+    right: 40px;
+    background: linear-gradient(135deg, #1a73e8, #ff4081);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.nav-menu.show {
+    display: flex;
+}
+
+/* Tablet and Mobile Styles */
+@media (max-width: 768px) {
+    nav ul {
+        display: none;
+    }
+
+    .nav-toggle {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    nav h1 {
+        font-size: 2rem;
+    }
+}
+
+/* JavaScript for Responsive Navigation Toggle */
+
+
+/* Container Styles */
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+    flex-wrap: wrap;
+}
+
+/* Content Styles */
+.content {
+    flex: 1 1 60%;
+    margin-right: 30px;
+    background-color: #1c1c1c; /* Darker background for content */
+    border-radius: 12px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition for hover */
+}
+
+.content:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    animation: pulse 1s infinite; /* Add pulse animation on hover */
+}
+
+/* Iframe Styles */
+.preview-iframe {
+    flex: 1 1 35%;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+    height: 600px; /* Set a fixed height, adjust as needed */
+    transition: transform 0.3s ease;
+}
+
+.preview-iframe:hover {
+    transform: scale(1.03);
+}
+
+/* Decoration Styles */
+.decoration {
+    margin-bottom: 30px;
+}
+
+/* Input Group Styles */
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ff4081; /* Label color for emphasis */
+}
+
+/* Input Styles */
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    background-color: #2c2c2c; /* Input background */
+    color: #e0e0e0; /* Input text color */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #ff4081; /* Highlight border on focus */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 8px rgba(255, 64, 129, 0.5); /* Add shadow on focus */
+}
+
+/* Button Styles */
+button {
+    background-color: #1a73e8; /* Button color */
+    color: #fff; /* Button text color */
+    padding: 12px 24px; /* Padding for button */
+    border: none; /* No border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.5); /* Shadow effect on hover */
+}
+
+/* Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column; /* Stack menu items on smaller screens */
+        align-items: flex-start; /* Align to the start */
+    }
+
+    .container {
+        flex-direction: column; /* Stack container elements */
+    }
+
+    .content {
+        flex: 1 1 100%; /* Full width on mobile */
+        margin-right: 0; /* Remove right margin */
+    }
+
+    .preview-iframe {
+        flex: 1 1 100%; /* Full width on mobile */
+        height: 400px; /* Adjust height for mobile */
+    }
+}
+
+
+/* Template Buttons Styles */
+.template-buttons {
+    display: flex; /* Align buttons in a row */
+    justify-content: space-around; /* Evenly space buttons */
+    margin: 10px 0; /* Margin for spacing */
+}
+
+.template-button {
+    background-color: #1a73e8; /* Button color */
+    color: #fff; /* Text color */
+    padding: 15px 30px; /* Padding for button */
+    border: none; /* No border */
+    border-radius: 10px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    font-size: 1.2rem; /* Font size */
+    text-align: center; /* Center text */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
+}
+
+.template-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+    box-shadow: 0 6px 20px rgba(0, 86, 179, 0.6); /* Shadow on hover */
+}
+
+.template-button.active {
+    background-color: #ff4081; /* Highlight color for the active template */
+    box-shadow: 0 6px 30px rgba(255, 64, 129, 0.6); /* Shadow for active button */
+}
+
+
+.experience-section {
+    background-color: #1c1c1c; /* Dark background for contrast */
+    border-radius: 12px; /* Rounded corners for a modern look */
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7); /* Deeper shadow for depth */
+    padding: 30px; /* Increased padding for spaciousness */
+    margin-bottom: 30px; /* Space below the section */
+    transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+.experience-section:hover {
+    transform: scale(1.02); /* Slight scale effect on hover */
+}
+
+.experience-section label {
+    color: #ff4081; /* Vibrant label color */
+    font-size: 1.8rem; /* Increased font size for emphasis */
+    margin-bottom: 15px; /* Space below the label */
+}
+
+.input-group {
+    margin-bottom: 20px; /* Space between input fields */
+}
+
+.input-group label {
+    display: block; /* Block display for labels */
+    margin-bottom: 8px; /* Space between label and input */
+    font-weight: bold; /* Emphasize labels */
+    color: #e0e0e0; /* Light color for labels */
+}
+
+.input-group h5 {
+    margin-bottom: 8px; /* Space below h5 */
+    color: #e0e0e0; /* Consistent color for h5 */
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%; /* Full width for inputs */
+    padding: 12px; /* Padding for inputs */
+    border: 1px solid #444; /* Light border for inputs */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1.1rem; /* Consistent font size */
+    background-color: #2c2c2c; /* Input background */
+    color: #e0e0e0; /* Input text color */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); /* Inner shadow for depth */
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color: #ff4081; /* Highlight border on focus */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 10px rgba(255, 64, 129, 0.5); /* Shadow on focus */
+}
+
+button {
+    background-color: #1a73e8; /* Button color */
+    color: #fff; /* Button text color */
+    padding: 12px 24px; /* Padding for button */
+    border: none; /* No border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition effects */
+    font-size: 1.1rem; /* Button font size */
+    font-weight: bold; /* Bold text */
+    position: relative; /* Position for shadow */
+}
+
+button::before {
+    content: ""; /* For the glowing effect */
+    position: absolute; /* Position it absolutely */
+    top: 0; /* Align it to the top */
+    left: 0; /* Align it to the left */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    border-radius: 8px; /* Match button corners */
+    background: rgba(255, 255, 255, 0.1); /* Light background */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+button:hover::before {
+    opacity: 1; /* Show glowing effect on hover */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+.experience-list {
+    margin-top: 20px; /* Space above the experience list */
+    color: #e0e0e0; /* Text color for the list */
+    font-size: 1rem; /* Font size for entries */
+    background-color: rgba(255, 255, 255, 0.05); /* Light background for entries */
+    border-radius: 8px; /* Rounded corners for entries */
+    padding: 15px; /* Padding for entries */
+}
+
+.experience-entry {
+    margin-bottom: 10px; /* Space between entries */
+    padding: 10px; /* Padding for individual entries */
+    border-left: 4px solid #ff4081; /* Left border for emphasis */
+    transition: background-color 0.3s ease; /* Transition for hover */
+}
+
+.experience-entry:hover {
+    background-color: rgba(255, 64, 129, 0.1); /* Highlight on hover */
+    transform: translateX(5px); /* Slide effect on hover */
+}

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resume.css">
+    <title>Dynamic Resume Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/home.html">Home</a></li>
+        </ul>
+        <button id="downloadPdfBtn">Download as PDF</button>
+        <button id="saveResumeBtn">Save Resume</button>
+        <button id="signInButton">Sign In</button>
+        <button id="signUpButton">Sign Up</button>
+        <button id="signOutButton" style="display: none;">Sign Out</button>
+        <span id="userNameDisplay" style="display: none;"></span>
+    </nav>
+
+    <div class="container">
+        <div class="split left">
+            <div class="decoration">
+                <div class="input-group">
+                    <label for="profilePictureInput">Profile Picture</label>
+                    <input type="file" id="profilePictureInput" accept="image/*">
+                </div>
+                <img id="profilePicturePreview" src="" alt="Profile Picture Preview" style="display: none; width: 100px; height: 100px; object-fit: cover; margin-top: 10px;">
+                
+
+                <h1>Enter Your Details</h1>
+                <div class="input-group">
+                    <label for="nameInput">Name</label>
+                    <input type="text" id="nameInput" placeholder="Your Name" required>
+                </div>
+                <div class="input-group">
+                    <label for="mobileInput">Mobile No.</label>
+                    <input type="text" id="mobileInput" placeholder="Your Mobile No." required>
+                </div>
+                <div class="input-group">
+                    <label for="emailInput">Email</label>
+                    <input type="email" id="emailInput" placeholder="Your Email" required>
+                </div>
+                <div class="input-group">
+                    <label for="summaryInput">Summary</label>
+                    <textarea type="text" id="summaryInput" placeholder="Your Summary" required></textarea>
+                </div>
+
+
+                <label for="summaryInput">Education</label>
+                <div id="educationContainer">
+                    <h3>Education</h3>
+                    <div class="input-group">
+                        <input type="text" placeholder="Degree/Institution" class="educationDegreeInput" required />
+                        <input type="text" placeholder="Year" class="educationYearInput" required />
+                        <button class="removeEducationButton" onclick="removeEducation(this)">Remove</button>
+                    </div>
+                </div>
+                <button id="addEducationButton" onclick="addEducation()">Add Education</button>
+                
+                
+
+                <div class="input-group">
+                    <label for="skillsInput">Skills</label>
+                    <div style="display: flex; align-items: center;">
+                        <input type="text" id="skillsInput" placeholder="Add a skill" />
+                        <button id="addSkillButton">+</button>
+                    </div>
+                    <div id="skillsContainer"></div>
+                </div>
+
+
+                
+
+                <div class="experience-section">
+                    <label><strong>Experience</strong></label>
+                    
+                    <div class="input-group">
+                        <h5 for="yearInput">Year</h5>
+                        <input type="text" id="yearInput" placeholder="Year (e.g., 2022)" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="companyInput">Company</label>
+                        <input type="text" id="companyInput" placeholder="Company Name" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="designationInput">Designation</label>
+                        <input type="text" id="designationInput" placeholder="Your Designation" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="experienceDescriptionInput">Experience Description</label>
+                        <textarea id="experienceDescriptionInput" placeholder="Describe your experience" required></textarea>
+                    </div>
+                    
+                    <button type="button" onclick="addExperience()">Add Experience</button>
+                </div>
+                
+                <div id="experienceEntries"></div>
+                
+
+                <div class="input-group">
+                    <label for="certificationsInput">Certifications</label>
+                    <input type="text" id="certificationsInput" placeholder="Your Certifications" required>
+                </div>
+               
+                <div id="additionalInputsContainer"></div>
+                <button id="addContentButton">Add Content</button>
+            </div>
+        </div>
+
+        <div class="split right">
+            <h3>Live Resume Preview:</h3>
+            <div class="template-buttons">
+                <div class="template-button" data-template="template1">Template 1</div>
+                <div class="template-button" data-template="template2">Template 2</div>
+                <div class="template-button" data-template="template3">Template 3</div>
+                <div class="template-button" data-template="template4">Template 4</div>
+            </div>
+            <iframe id="resumeFrame" src="about:blank" width="792px" height="1122px"></iframe>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="resume.js"></script>
+    <script>
+        // PDF Generation functionality
+const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+downloadPdfBtn.addEventListener('click', async () => {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    const iframe = document.getElementById('resumeFrame');
+    const resumeHtml = iframe.contentDocument.body;
+
+    // Capture iframe content as an image
+    html2canvas(resumeHtml).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+
+        // Get PDF dimensions
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // Fit the image to the full PDF page
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('resume.pdf');
+    });
+});
+
+        // Event listeners for login and signup buttons
+        document.getElementById('signInButton').addEventListener('click', () => {
+            window.location.href = 'login.html'; // Redirect to the login page
+        });
+
+        document.getElementById('signUpButton').addEventListener('click', () => {
+            window.location.href = 'signup.html'; // Redirect to the signup page
+        });
+
+        document.getElementById('signOutButton').addEventListener('click', async () => {
+            await fetch('/logout', { method: 'POST' });
+            window.location.href='/home.html'; // Reload the page after logout
+        });
+
+        // Fetch user login status on page load
+        fetch('/check-session')
+            .then(response => response.json())
+            .then(data => {
+                if (data.isAuthenticated) {
+                    document.getElementById('signInButton').style.display = 'none';
+                    document.getElementById('signUpButton').style.display = 'none';
+                    document.getElementById('signOutButton').style.display = 'block';
+                    const userNameDisplay = document.getElementById('userNameDisplay');
+                    userNameDisplay.textContent = `Welcome, ${data.username}!`;
+                    userNameDisplay.style.display = 'inline'; // Show username
+                }
+            });
+
+        // Add functionality to add additional content inputs
+        
+// JavaScript to add and remove education entries
+
+
+function removeEducation(button) {
+    // Remove the parent div of the clicked remove button
+    button.remove();
+    updateResume();
+}
+
+document.getElementById('saveResumeBtn').addEventListener('click', async () => {
+    const profilePictureInput = document.getElementById('profilePictureInput');
+    let profilePictureData = '';
+
+    // Check if a file is selected and convert to Base64
+    if (profilePictureInput.files.length > 0) {
+        const file = profilePictureInput.files[0];
+        const reader = new FileReader();
+
+        // Read the file and convert it to Base64
+        reader.readAsDataURL(file);
+        reader.onloadend = async () => {
+            profilePictureData = reader.result;
+
+            // Collect resume data
+            const resumeData = {
+                name: document.getElementById('nameInput').value,
+                mobile: document.getElementById('mobileInput').value,
+                email: document.getElementById('emailInput').value,
+                summary: document.getElementById('summaryInput').value,
+                education: Array.from(document.querySelectorAll('.educationDegreeInput')).map((degreeInput, index) => {
+                    const yearInput = document.querySelectorAll('.educationYearInput')[index];
+                    return `${degreeInput.value} (${yearInput.value})`; // Format as "Degree (Year)"
+                }).join('; '), // Join education entries with a semicolon
+                skills: skillsArray.join(','), // Use the skills array joined by commas
+                certifications: document.getElementById('certificationsInput').value,
+                additionalContent: Array.from(document.querySelectorAll('#additionalInputsContainer .input-group')).map(inputGroup => {
+                    const title = inputGroup.querySelector('.additional-title').value.trim();
+                    const content = inputGroup.querySelector('.additional-input').value.trim();
+                    return title && content ? `${title}:${content}` : null; // Create "title:content" pairs only if both are present
+                }).filter(Boolean).join(','), // Remove any null values and join pairs with a comma
+                experience: experienceStack.map(entry => ({
+                    year: entry.year || '',          // Ensure role is present
+                    company: entry.company || '',    // Ensure company is present
+                    designation: entry.designation || '',          // Ensure date is present
+                    description: entry.description || '' // Optional description
+                })),
+                profilePicture: profilePictureData, // Use the Base64 string here
+            };
+
+            try {
+                const response = await fetch('/save-resume', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(resumeData),
+                });
+
+                const result = await response.json();
+                alert(result.message || 'Resume saved successfully');
+            } catch (error) {
+                console.error('Error saving resume:', error);
+                alert('An error occurred while saving the resume.');
+            }
+        };
+    } else {
+        alert('Please upload a profile picture.');
+    }
+});
+
+window.addEventListener('load', async () => {
+    try {
+        const response = await fetch('/resume-data');
+        if (response.ok) {
+            const resumeData = await response.json();
+
+            // Prefill the inputs with fetched resume data
+            document.getElementById('nameInput').value = resumeData.name || '';
+            document.getElementById('mobileInput').value = resumeData.mobile || '';
+            document.getElementById('emailInput').value = resumeData.email || '';
+            document.getElementById('summaryInput').value = resumeData.summary || '';
+            
+            const educationContainer = document.getElementById('educationContainer');
+            educationContainer.innerHTML = ''; // Clear existing education fields
+
+            // Prefill education if available
+            if (resumeData.education) {
+                const educationEntries = resumeData.education.split(';'); // Split entries by semicolon
+                educationEntries.forEach(entry => {
+                    if (entry.trim()) {
+                        const [degree, year] = entry.split('('); // Split into degree and year
+                        const yearTrimmed = year ? year.replace(')', '').trim() : ''; // Clean up the year
+
+                        // Create a new input group div
+                        const newInputDiv = document.createElement('div');
+                        newInputDiv.className = 'input-group';
+
+                        // Create degree input field
+                        const degreeInput = document.createElement('input');
+                        degreeInput.type = 'text';
+                        degreeInput.value = degree.trim(); // Prefill with degree
+                        degreeInput.placeholder = 'Degree/Institution';
+                        degreeInput.classList.add('educationDegreeInput');
+                        newInputDiv.appendChild(degreeInput);
+
+                        // Create year input field
+                        const yearInput = document.createElement('input');
+                        yearInput.type = 'text';
+                        yearInput.value = yearTrimmed; // Prefill with year
+                        yearInput.placeholder = 'Year of Graduation';
+                        yearInput.classList.add('educationYearInput');
+                        newInputDiv.appendChild(yearInput);
+
+                        // Create a remove button
+                        const removeButton = document.createElement('button');
+                        removeButton.textContent = 'Remove';
+                        removeButton.className = 'removeEducationButton';
+                        removeButton.onclick = () => removeEducation(newInputDiv); // Pass the input div for removal
+
+                        newInputDiv.appendChild(removeButton); // Append the remove button
+                        educationContainer.appendChild(newInputDiv); // Append the input group to the container
+                    }
+                });
+            }
+
+            document.getElementById('certificationsInput').value = resumeData.certifications || '';
+            
+            // Prefill skills if available
+            if (resumeData.skills) {
+                skillsArray = resumeData.skills.split(',').map(skill => skill.trim()).filter(Boolean);
+                updateSkillsDisplay(); // Display the prefetched skills
+            }
+
+            // Prefill experience if available
+            if (resumeData.experience && Array.isArray(resumeData.experience)) {
+                experienceStack = resumeData.experience; // Load into the stack
+                console.log(experienceStack); // Update the UI to show loaded experiences
+                displayExperienceEntries() ;
+            }
+
+            // Prefill additional content
+            if (resumeData.additionalContent) {
+                const additionalContents = resumeData.additionalContent.split(',');
+                const container = document.getElementById('additionalInputsContainer');
+
+                additionalContents.forEach(content => {
+                    if (content.trim()) {
+                        const [title, info] = content.split(':');
+
+                        // Create a new input group div
+                        const newInputDiv = document.createElement('div');
+                        newInputDiv.className = 'input-group';
+
+                        // Create title input field
+                        const titleInput = document.createElement('input');
+                        titleInput.type = 'text';
+                        titleInput.value = title ? title.trim() : '';
+                        titleInput.placeholder = 'Title for Additional Info';
+                        titleInput.classList.add('additional-title');
+                        newInputDiv.appendChild(titleInput);
+
+                        // Create content input field
+                        const contentInput = document.createElement('input');
+                        contentInput.type = 'text';
+                        contentInput.value = info ? info.trim() : '';
+                        contentInput.placeholder = 'Additional Info';
+                        contentInput.classList.add('additional-input');
+                        newInputDiv.appendChild(contentInput);
+
+                        titleInput.addEventListener('input', updateResume);
+                        contentInput.addEventListener('input', updateResume);
+
+                        // Create a remove button
+                        const removeButton = document.createElement('button');
+                        removeButton.textContent = 'Remove';
+                        removeButton.className = 'remove-button';
+
+                        removeButton.addEventListener('click', () => {
+                            container.removeChild(newInputDiv);
+                            updateResume();
+                        });
+
+                        newInputDiv.appendChild(removeButton);
+                        container.appendChild(newInputDiv);
+                    }
+                });
+            }
+
+            // Prefill profile picture if available
+            function base64ToFile(base64, filename) {
+                const arr = base64.split(',');
+                const mime = arr[0].match(/:(.*?);/)[1];
+                const bstr = atob(arr[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+
+                return new File([u8arr], filename, { type: mime });
+            }
+
+            if (resumeData.profilePicture) { 
+                const profilePictureInput = document.getElementById('profilePictureInput');
+                const filename = 'profile_picture.jpg';
+            
+                try {
+                    const file = base64ToFile(resumeData.profilePicture, filename);
+            
+                    // Create a URL for the profile picture
+                    const profilePictureUrl = URL.createObjectURL(file);
+                    
+                    // Use DataTransfer to set the files
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    profilePictureInput.files = dataTransfer.files;
+            
+                    // Create and dispatch the change event manually
+                    const event = new Event('change', { bubbles: true });
+                    profilePictureInput.dispatchEvent(event);
+            
+                    // Call the updateResume function to reflect changes
+                    updateResume(); 
+            
+                } catch (error) {
+                    console.error("Error converting Base64 to file:", error);
+                    alert("Failed to load profile picture. Please try again."); // Optional: User feedback
+                }
+            }
+            
+            
+            updateResume();
+        }
+    } catch (error) {
+        console.error('Error fetching resume data:', error);
+    }
+});
+
+    </script>
+</body>
+</html>
