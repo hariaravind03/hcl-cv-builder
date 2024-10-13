@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
-        /* Reset and Base Styles */
+        
         * {
             margin: 0;
             padding: 0;
@@ -13,7 +13,7 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Body and Background Gradient */
+       
         body {
             display: flex;
             justify-content: center;
@@ -23,7 +23,7 @@
             color: #333;
         }
 
-        /* Main Heading */
+        
         h1 {
             font-size: 2.5rem;
             font-weight: bold;
@@ -32,7 +32,7 @@
             margin-bottom: 20px;
         }
 
-        /* Form Container Styling */
+     
         form {
             display: flex;
             flex-direction: column;
@@ -46,7 +46,7 @@
             text-align: center;
         }
 
-        /* Input Fields Styling */
+        
         input[type="text"],
         input[type="password"] {
             width: 100%;
@@ -65,7 +65,7 @@
             outline: none;
         }
 
-        /* Submit Button Styling */
+        
         button[type="submit"] {
             width: 100%;
             padding: 14px;
@@ -86,7 +86,7 @@
             box-shadow: 0 4px 8px rgba(58, 141, 255, 0.4);
         }
 
-        /* Link Styling */
+        
         a {
             margin-top: 20px;
             color: #fff;
@@ -100,7 +100,7 @@
             text-decoration: underline;
         }
 
-        /* Back Button Styling */
+        
         .back-button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -133,7 +133,7 @@
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault(); 
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -147,11 +147,11 @@
                     body: JSON.stringify({ username, password }) // Send as JSON
                 });
 
-                const data = await response.text(); // Read the response text
-                alert(data); // Display response from server
+                const data = await response.text();
+                alert(data);  
                 if (response.ok) {
-                    // Redirect to another page or update UI after successful login
-                    window.location.href = '/resume.html'; // Example redirect
+                    
+                    window.location.href = '/resume.html'; 
                 }
             } catch (error) {
                 console.error('Error:', error);
