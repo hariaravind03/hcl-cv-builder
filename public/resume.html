@@ -129,7 +129,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="resume.js"></script>
     <script>
-        // PDF Generation functionality
+      
 const downloadPdfBtn = document.getElementById('downloadPdfBtn');
 downloadPdfBtn.addEventListener('click', async () => {
     const { jsPDF } = window.jspdf;
@@ -137,35 +137,33 @@ downloadPdfBtn.addEventListener('click', async () => {
     const iframe = document.getElementById('resumeFrame');
     const resumeHtml = iframe.contentDocument.body;
 
-    // Capture iframe content as an image
+   
     html2canvas(resumeHtml).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
 
-        // Get PDF dimensions
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        // Fit the image to the full PDF page
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save('resume.pdf');
     });
 });
 
-        // Event listeners for login and signup buttons
+       
         document.getElementById('signInButton').addEventListener('click', () => {
-            window.location.href = 'login.html'; // Redirect to the login page
+            window.location.href = 'login.html'; 
         });
 
         document.getElementById('signUpButton').addEventListener('click', () => {
-            window.location.href = 'signup.html'; // Redirect to the signup page
+            window.location.href = 'signup.html';
         });
 
         document.getElementById('signOutButton').addEventListener('click', async () => {
             await fetch('/logout', { method: 'POST' });
-            window.location.href='/home.html'; // Reload the page after logout
+            window.location.href='/home.html'; 
         });
 
-        // Fetch user login status on page load
+       
         fetch('/check-session')
             .then(response => response.json())
             .then(data => {
@@ -175,17 +173,16 @@ downloadPdfBtn.addEventListener('click', async () => {
                     document.getElementById('signOutButton').style.display = 'block';
                     const userNameDisplay = document.getElementById('userNameDisplay');
                     userNameDisplay.textContent = `Welcome, ${data.username}!`;
-                    userNameDisplay.style.display = 'inline'; // Show username
+                    userNameDisplay.style.display = 'inline'; 
                 }
             });
 
-        // Add functionality to add additional content inputs
         
-// JavaScript to add and remove education entries
+
 
 
 function removeEducation(button) {
-    // Remove the parent div of the clicked remove button
+    
     button.remove();
     updateResume();
 }
@@ -194,17 +191,16 @@ document.getElementById('saveResumeBtn').addEventListener('click', async () => {
     const profilePictureInput = document.getElementById('profilePictureInput');
     let profilePictureData = '';
 
-    // Check if a file is selected and convert to Base64
+   
     if (profilePictureInput.files.length > 0) {
         const file = profilePictureInput.files[0];
         const reader = new FileReader();
 
-        // Read the file and convert it to Base64
         reader.readAsDataURL(file);
         reader.onloadend = async () => {
             profilePictureData = reader.result;
 
-            // Collect resume data
+           
             const resumeData = {
                 name: document.getElementById('nameInput').value,
                 mobile: document.getElementById('mobileInput').value,
@@ -212,22 +208,22 @@ document.getElementById('saveResumeBtn').addEventListener('click', async () => {
                 summary: document.getElementById('summaryInput').value,
                 education: Array.from(document.querySelectorAll('.educationDegreeInput')).map((degreeInput, index) => {
                     const yearInput = document.querySelectorAll('.educationYearInput')[index];
-                    return `${degreeInput.value} (${yearInput.value})`; // Format as "Degree (Year)"
-                }).join('; '), // Join education entries with a semicolon
-                skills: skillsArray.join(','), // Use the skills array joined by commas
+                    return `${degreeInput.value} (${yearInput.value})`;
+                }).join('; '), 
+                skills: skillsArray.join(','), 
                 certifications: document.getElementById('certificationsInput').value,
                 additionalContent: Array.from(document.querySelectorAll('#additionalInputsContainer .input-group')).map(inputGroup => {
                     const title = inputGroup.querySelector('.additional-title').value.trim();
                     const content = inputGroup.querySelector('.additional-input').value.trim();
-                    return title && content ? `${title}:${content}` : null; // Create "title:content" pairs only if both are present
-                }).filter(Boolean).join(','), // Remove any null values and join pairs with a comma
+                    return title && content ? `${title}:${content}` : null; 
+                }).filter(Boolean).join(','), 
                 experience: experienceStack.map(entry => ({
-                    year: entry.year || '',          // Ensure role is present
-                    company: entry.company || '',    // Ensure company is present
-                    designation: entry.designation || '',          // Ensure date is present
-                    description: entry.description || '' // Optional description
+                    year: entry.year || '',          
+                    company: entry.company || '',   
+                    designation: entry.designation || '',          
+                    description: entry.description || '' 
                 })),
-                profilePicture: profilePictureData, // Use the Base64 string here
+                profilePicture: profilePictureData, 
             };
 
             try {
@@ -257,71 +253,69 @@ window.addEventListener('load', async () => {
         if (response.ok) {
             const resumeData = await response.json();
 
-            // Prefill the inputs with fetched resume data
+           
             document.getElementById('nameInput').value = resumeData.name || '';
             document.getElementById('mobileInput').value = resumeData.mobile || '';
             document.getElementById('emailInput').value = resumeData.email || '';
             document.getElementById('summaryInput').value = resumeData.summary || '';
             
             const educationContainer = document.getElementById('educationContainer');
-            educationContainer.innerHTML = ''; // Clear existing education fields
+            educationContainer.innerHTML = ''; 
 
-            // Prefill education if available
             if (resumeData.education) {
-                const educationEntries = resumeData.education.split(';'); // Split entries by semicolon
+                const educationEntries = resumeData.education.split(';');
                 educationEntries.forEach(entry => {
                     if (entry.trim()) {
-                        const [degree, year] = entry.split('('); // Split into degree and year
-                        const yearTrimmed = year ? year.replace(')', '').trim() : ''; // Clean up the year
+                        const [degree, year] = entry.split('('); 
+                        const yearTrimmed = year ? year.replace(')', '').trim() : ''; 
 
-                        // Create a new input group div
+                       
                         const newInputDiv = document.createElement('div');
                         newInputDiv.className = 'input-group';
 
-                        // Create degree input field
+                        
                         const degreeInput = document.createElement('input');
                         degreeInput.type = 'text';
-                        degreeInput.value = degree.trim(); // Prefill with degree
+                        degreeInput.value = degree.trim(); 
                         degreeInput.placeholder = 'Degree/Institution';
                         degreeInput.classList.add('educationDegreeInput');
                         newInputDiv.appendChild(degreeInput);
 
-                        // Create year input field
+                        
                         const yearInput = document.createElement('input');
                         yearInput.type = 'text';
-                        yearInput.value = yearTrimmed; // Prefill with year
+                        yearInput.value = yearTrimmed;
                         yearInput.placeholder = 'Year of Graduation';
                         yearInput.classList.add('educationYearInput');
                         newInputDiv.appendChild(yearInput);
 
-                        // Create a remove button
                         const removeButton = document.createElement('button');
                         removeButton.textContent = 'Remove';
                         removeButton.className = 'removeEducationButton';
-                        removeButton.onclick = () => removeEducation(newInputDiv); // Pass the input div for removal
+                        removeButton.onclick = () => removeEducation(newInputDiv); 
 
-                        newInputDiv.appendChild(removeButton); // Append the remove button
-                        educationContainer.appendChild(newInputDiv); // Append the input group to the container
+                        newInputDiv.appendChild(removeButton); 
+                        educationContainer.appendChild(newInputDiv); 
                     }
                 });
             }
 
             document.getElementById('certificationsInput').value = resumeData.certifications || '';
             
-            // Prefill skills if available
+            
             if (resumeData.skills) {
                 skillsArray = resumeData.skills.split(',').map(skill => skill.trim()).filter(Boolean);
-                updateSkillsDisplay(); // Display the prefetched skills
+                updateSkillsDisplay(); 
             }
 
-            // Prefill experience if available
+          
             if (resumeData.experience && Array.isArray(resumeData.experience)) {
-                experienceStack = resumeData.experience; // Load into the stack
-                console.log(experienceStack); // Update the UI to show loaded experiences
+                experienceStack = resumeData.experience;
+                console.log(experienceStack); 
                 displayExperienceEntries() ;
             }
 
-            // Prefill additional content
+   
             if (resumeData.additionalContent) {
                 const additionalContents = resumeData.additionalContent.split(',');
                 const container = document.getElementById('additionalInputsContainer');
@@ -330,11 +324,10 @@ window.addEventListener('load', async () => {
                     if (content.trim()) {
                         const [title, info] = content.split(':');
 
-                        // Create a new input group div
+                      
                         const newInputDiv = document.createElement('div');
                         newInputDiv.className = 'input-group';
 
-                        // Create title input field
                         const titleInput = document.createElement('input');
                         titleInput.type = 'text';
                         titleInput.value = title ? title.trim() : '';
@@ -342,7 +335,6 @@ window.addEventListener('load', async () => {
                         titleInput.classList.add('additional-title');
                         newInputDiv.appendChild(titleInput);
 
-                        // Create content input field
                         const contentInput = document.createElement('input');
                         contentInput.type = 'text';
                         contentInput.value = info ? info.trim() : '';
@@ -353,7 +345,6 @@ window.addEventListener('load', async () => {
                         titleInput.addEventListener('input', updateResume);
                         contentInput.addEventListener('input', updateResume);
 
-                        // Create a remove button
                         const removeButton = document.createElement('button');
                         removeButton.textContent = 'Remove';
                         removeButton.className = 'remove-button';
@@ -369,7 +360,7 @@ window.addEventListener('load', async () => {
                 });
             }
 
-            // Prefill profile picture if available
+      
             function base64ToFile(base64, filename) {
                 const arr = base64.split(',');
                 const mime = arr[0].match(/:(.*?);/)[1];
@@ -391,24 +382,23 @@ window.addEventListener('load', async () => {
                 try {
                     const file = base64ToFile(resumeData.profilePicture, filename);
             
-                    // Create a URL for the profile picture
+             
                     const profilePictureUrl = URL.createObjectURL(file);
                     
-                    // Use DataTransfer to set the files
+                 
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(file);
                     profilePictureInput.files = dataTransfer.files;
             
-                    // Create and dispatch the change event manually
+                   
                     const event = new Event('change', { bubbles: true });
                     profilePictureInput.dispatchEvent(event);
             
-                    // Call the updateResume function to reflect changes
                     updateResume(); 
             
                 } catch (error) {
                     console.error("Error converting Base64 to file:", error);
-                    alert("Failed to load profile picture. Please try again."); // Optional: User feedback
+                    alert("Failed to load profile picture. Please try again.");
                 }
             }
             
